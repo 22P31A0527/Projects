@@ -7,6 +7,8 @@ private:
     char currentPlayer;
     string player1Name;
     string player2Name;
+    char player1Symbol;
+    char player2Symbol;
 
     void clearScreen() {
         #ifdef _WIN32
@@ -44,7 +46,7 @@ private:
         
         int row = (position - 1) / 3;
         int col = (position - 1) % 3;
-        return (board[row][col] != 'X' && board[row][col] != 'O');
+        return (board[row][col] != player1Symbol && board[row][col] != player2Symbol);
     }
 
     void makeMove(int position) {
@@ -70,7 +72,7 @@ private:
     bool isBoardFull() const {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (board[i][j] != 'X' && board[i][j] != 'O') {
+                if (board[i][j] != player1Symbol && board[i][j] != player2Symbol) {
                     return false;
                 }
             }
@@ -79,12 +81,12 @@ private:
     }
 
     void switchPlayer() {
-        currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+        currentPlayer = (currentPlayer == player1Symbol) ? player2Symbol : player1Symbol;
     }
 
     int getValidMove() const {
         int position;
-        string currentPlayerName = (currentPlayer == 'X') ? player1Name : player2Name;
+        string currentPlayerName = (currentPlayer == player1Symbol) ? player1Name : player2Name;
         
         while (true) {
             cout << currentPlayerName << "'s turn (" << currentPlayer << "): Enter position (1-9): ";
@@ -101,11 +103,17 @@ private:
     }
 
 public:
-    TicTacToe() : currentPlayer('X') {
+    TicTacToe() {
         cout << "Enter Player 1 name: ";
-        cin >> player1Name;
+        getline(cin, player1Name);
+        cout << "Enter a symbol to your move for 1st player: ";
+        cin >> player1Symbol;
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         cout << "Enter Player 2 name: ";
-        cin >> player2Name;
+        getline(cin, player2Name);
+        cout << "Enter a symbol to your move for 2nd player: ";
+        cin >> player2Symbol;
+        currentPlayer = player1Symbol;
     }
 
     void play() {
@@ -133,7 +141,7 @@ private:
             if (checkWin()) {
                 clearScreen();
                 displayBoard();
-                string winner = (currentPlayer == 'X') ? player1Name : player2Name;
+                string winner = (currentPlayer == player1Symbol) ? player1Name : player2Name;
                 cout << "\nCongratulations! " << winner << " wins the game!\n";
                 gameWon = true;
             } else if (isBoardFull()) {
@@ -154,4 +162,3 @@ int main() {
     cout << "\nThanks for playing!\n";
     return 0;
 }
-
