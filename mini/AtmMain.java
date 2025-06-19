@@ -7,8 +7,8 @@ public class AtmMain {
 
 	public static void main(String[] args) {
 		AtmInterface op=new AtmOperations();
-		int atmnumber=12345;
-		int atmpin=123;
+		int atmnumber = 527;
+		int atmpin = 527;
 		Scanner sc = new Scanner(System.in);
 		System.out.println("welcome to ATM Machine!");
 		System.out.print("enter atm number: ");
